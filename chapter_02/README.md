@@ -15,3 +15,10 @@ You may run it using `wasm3` interpreter (written in C):
 wasm3> how_old 2024 1982
 Result: 42
 ```
+
+To preview [index.html](index.html) file that runs [hello.wasm](hello.wasm) file the instructed step is:
+
+```shell
+# assumes presence of python3 on your host system
+python3 -m http.server 10003
+```
