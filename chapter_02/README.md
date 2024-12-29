@@ -16,6 +16,13 @@ wasm3> how_old 2024 1982
 Result: 42
 ```
 
+ ## Link common JS and CSS files
+
+```shell
+# supposing you are in chapter_02 folder already
+ln -s ../common common
+```
+
 To preview [index.html](index.html) file that runs [hello.wasm](hello.wasm) file the instructed step is:
 
 ```shell

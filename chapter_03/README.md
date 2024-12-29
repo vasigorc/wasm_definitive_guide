@@ -32,3 +32,17 @@ Code[2]:
  - func[1] size=7 <how_old>
  - func[2] size=10 <log_how_old>
  ```
+
+ ## Link common JS and CSS files
+
+```shell
+# supposing you are in chapter_03 folder already
+ln -s ../common common
+```
+
+To preview [index.html](index.html) file that runs [hellolog.wasm](hellolog.wasm) file the instructed step is:
+
+```shell
+# assumes presence of python3 on your host system
+python3 -m http.server 10003
+```
