@@ -1,13 +1,6 @@
 # Chapter 3. WebAssembly Modules
 
-`hellolog.wasm` is already there, but you could have generated it like so:
-
-```shell
-cd chapter_03/
-wat2wasm hellolog.wat
-```
-
-Hew is how you can inspect the module use CLI inspection tool:
+Hew is how you can inspect the module using CLI inspection tool:
 
 ```shell
 ➜  chapter_03 git:(main) ✗ wasm-objdump -x hellolog.wasm

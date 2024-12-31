@@ -1,12 +1,5 @@
 # Chapter 2. "Hello, World!" (Sort of)
 
-`hello.wasm` is already there, but you could have generated it like so:
-
-```shell
-cd chapter_02/
-wat2wasm hello.wat
-```
-
 You may run it using `wasm3` interpreter (written in C):
 
 ```shell
