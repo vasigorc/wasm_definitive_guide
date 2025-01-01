@@ -126,6 +126,12 @@ cmake -DLLVM_ENABLE_PROJECTS=clang -DCMAKE_BUILD_TYPE=Release -G "Unix Makefiles
 sudo make install
 ```
 
+I also found myself needing to do this to install `wasm-lld`:
+
+```shell
+sudo dnf install lld clang llvm
+```
+
 This second option literally laster hours before completing, in the end you should have `clang` installed though:
 
 ```shell
