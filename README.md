@@ -102,3 +102,33 @@ Code[2]:
  - func[1] size=7 <how_old>
  - func[2] size=10 <log_how_old>
  ```
+
+## LLVM
+
+LLVM - is a compiler toolkit that serves as the basis of Rust, Swift, Julia and many more.
+
+Installation instructions for LLVM can be found [here](https://apt.llvm.org/).
+
+This is how one would install LLVM on most of UNIX bases systems:
+
+```shell
+bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+```
+
+It didn't work for me on Fedora though, I actually had to follow slightly modified steps from LLVM's [GetStarted page](https://clang.llvm.org/get_started.html):
+
+```shell
+git clone --depth=1 https://github.com/llvm/llvm-project.git
+cd llvm-project
+mkdir build
+cd build
+cmake -DLLVM_ENABLE_PROJECTS=clang -DCMAKE_BUILD_TYPE=Release -G "Unix Makefiles" ../llvm
+sudo make install
+```
+
+This second option literally laster hours before completing, in the end you should have `clang` installed though:
+
+```shell
+which clang
+/usr/local/bin/clang
+```
