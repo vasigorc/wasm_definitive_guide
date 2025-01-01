@@ -132,3 +132,11 @@ This second option literally laster hours before completing, in the end you shou
 which clang
 /usr/local/bin/clang
 ```
+
+Lastly confirm that the installed LLVM version supports WebAssembly:
+
+```shell
+llc --version | grep wasm
+    wasm32      - WebAssembly 32-bit
+    wasm64      - WebAssembly 64-bit
+```
