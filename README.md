@@ -67,43 +67,7 @@ sudo make install
 ...
 ```
 
-## WAT - WASM files
-
-In most cases when a particular chapter includes a `.wat` file there will
-be a corresponding `.wasm` file. Note, that you could have generated it yourself, e.g.:
-
-```shell
-cd chapter_03/
-wat2wasm hellolog.wat
-```
-
-In order to analyze the binary `.wasm` file, use `wasm-objdump` tool, e.g.:
-
-```shell
-➜  chapter_03 git:(main) ✗ wasm-objdump -x hellolog.wasm
-
-hellolog.wasm:  file format wasm 0x1
-
-Section Details:
-
-Type[3]:
- - type[0] (i32) -> nil
- - type[1] (i32, i32) -> i32
- - type[2] (i32, i32) -> nil
-Import[1]:
- - func[0] sig=0 <imports.log_func> <- imports.log_func
-Function[2]:
- - func[1] sig=1 <how_old>
- - func[2] sig=2 <log_how_old>
-Export[2]:
- - func[1] <how_old> -> "how_old"
- - func[2] <log_how_old> -> "log_how_old"
-Code[2]:
- - func[1] size=7 <how_old>
- - func[2] size=10 <log_how_old>
- ```
-
-## LLVM
+### LLVM
 
 LLVM - is a compiler toolkit that serves as the basis of Rust, Swift, Julia and many more.
 
@@ -146,3 +110,60 @@ llc --version | grep wasm
     wasm32      - WebAssembly 32-bit
     wasm64      - WebAssembly 64-bit
 ```
+
+### Emscripten 
+
+The [recommended approach](https://emscripten.org/docs/getting_started/downloads.html#installation-instructions-using-the-emsdk-recommended)
+is to, again, install it from sources:
+
+```shell
+# clone the repository
+git clone https://github.com/emscripten-core/emsdk.git
+cd emsdk
+# install the sdk
+./emsdk install latest
+# make Emscripten available to the current shell session
+source ./emsdk_env.sh
+```
+
+To facilitate working with `emcc` from other directories, consider adding last line to `~/.zsrhc` or `~/.bashrc`:
+
+```shell
+echo 'source ~/repos/emsdk/emsdk_env.sh' >> ~/.zshrc
+```
+
+## WAT - WASM files
+
+In most cases when a particular chapter includes a `.wat` file there will
+be a corresponding `.wasm` file. Note, that you could have generated it yourself, e.g.:
+
+```shell
+cd chapter_03/
+wat2wasm hellolog.wat
+```
+
+In order to analyze the binary `.wasm` file, use `wasm-objdump` tool, e.g.:
+
+```shell
+➜  chapter_03 git:(main) ✗ wasm-objdump -x hellolog.wasm
+
+hellolog.wasm:  file format wasm 0x1
+
+Section Details:
+
+Type[3]:
+ - type[0] (i32) -> nil
+ - type[1] (i32, i32) -> i32
+ - type[2] (i32, i32) -> nil
+Import[1]:
+ - func[0] sig=0 <imports.log_func> <- imports.log_func
+Function[2]:
+ - func[1] sig=1 <how_old>
+ - func[2] sig=2 <log_how_old>
+Export[2]:
+ - func[1] <how_old> -> "how_old"
+ - func[2] <log_how_old> -> "log_how_old"
+Code[2]:
+ - func[1] size=7 <how_old>
+ - func[2] size=10 <log_how_old>
+ ```
