@@ -94,3 +94,16 @@ nm -a simplemain.out
 0000000000001060 T _start
 0000000000004020 D __TMC_END__
 ```
+
+## Make a function return a newly constructed array in C
+
+This example maybe found in file [simple5.c](simple.c):
+
+```shell
+clang simple5.c -o simple5.out
+./simple5.out
+a is 0x562b916022a0
+The first value is 0
+The second value is 1
+The third value is 2
+```
