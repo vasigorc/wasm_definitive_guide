@@ -107,3 +107,10 @@ The first value is 0
 The second value is 1
 The third value is 2
 ```
+
+## A low level Helloworld with C/C++ and WASM
+
+In this section the author of the book introduced a "Hello, world!" WASM example based on purely
+C/C++ files and `clang` compiler. This is based on this [git repo](https://github.com/PetterS/clang-wasm) 
+and purposefully avoids using Escripten or WASI in order to demonstrate what is being done under
+the hood. The expectation is to remove the complexity as chapters progress.
