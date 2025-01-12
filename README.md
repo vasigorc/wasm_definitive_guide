@@ -129,7 +129,8 @@ source ./emsdk_env.sh
 To facilitate working with `emcc` from other directories, consider adding last line to `~/.zsrhc` or `~/.bashrc`:
 
 ```shell
-echo 'source ~/repos/emsdk/emsdk_env.sh' >> ~/.zshrc
+export EMSDK_QUIET=1
+source /home/vgorcinschi/repos/emsdk/emsdk_env.sh > /dev/null 2>&1
 ```
 
 ## WAT - WASM files
