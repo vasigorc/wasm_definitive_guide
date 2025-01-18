@@ -55,7 +55,7 @@ and navigate to `localhost:10003/howold.html` to see how JS dynamically uses nat
 clang simplemain.c simple.c -o simplemain.out
 # to analyze the generated binary file
 nm -a simplemain.out
-0000000000000000 a 
+0000000000000000 a
 0000000000000358 r __abi_tag
 0000000000001180 T addArray
 000000000000401c B __bss_start
@@ -111,6 +111,16 @@ The third value is 2
 ## A low level Helloworld with C/C++ and WASM
 
 In this section the author of the book introduced a "Hello, world!" WASM example based on purely
-C/C++ files and `clang` compiler. This is based on this [git repo](https://github.com/PetterS/clang-wasm) 
+C/C++ files and `clang` compiler. This is based on this [git repo](https://github.com/PetterS/clang-wasm)
 and purposefully avoids using Escripten or WASI in order to demonstrate what is being done under
 the hood. The expectation is to remove the complexity as chapters progress.
+
+## A "Hello, World!" project in WebAssembly
+
+Following the section on pp. 84-86. [helloworld](./helloworld) directory in this chapter's code directory
+offers an implementation of a small program that highlights libraries and required supported code that is
+needed to simply print "Hello, world!" to the JavaScript console. [nanolibc](./helloworld/nanolibc) includes
+low-level code that provides some basic functionality, such as `printf()` that are normally
+provided by the operating system. In the subsequent chapters, Brian Sletten (the author) covers how to
+port existing software to WebAssembly with much less pain. With this project, he highlights
+how this could be done by hand.
