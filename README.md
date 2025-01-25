@@ -6,9 +6,28 @@ This is a walkthrough of the O'Reilly book by Brian Sletten
 
 ## Required tools
 
-In order to run examples from this repository you will need a few tools installed on your machine:
+In order to run examples from this repository you will need a few tools installed on your machine. You may install them manually
+or, prepare a `nix-shell` environment, as, for example, I did [here](https://github.com/vasigorc/bash-utils/blob/main/nix/compiled-module.nix).
 
-### wabt
+### Example of using `nix-shell` environments
+
+Note, that this requires you to have `nix-shell` [installed](https://nixos.org/download/) on your laptop.
+
+In my case, I've downloaded this [Git repository](https://github.com/vasigorc/bash-utils), and then from the root of this repostiory I ran:
+
+```shell
+nix-shell ~/repos/bash-utils/nix/compiled.nix
+unpacking 'https://github.com/NixOS/nixpkgs/archive/e24b4c09e963677b1beea49d411cd315a024ad3a.tar.gz' into the Git cache...
+info: using existing install for 'stable-x86_64-unknown-linux-gnu'
+info: default toolchain set to 'stable-x86_64-unknown-linux-gnu'
+
+  stable-x86_64-unknown-linux-gnu unchanged - rustc 1.79.0 (129f3b996 2024-06-10)
+[nix-shell:~/repos/wasm_definitive_guide]$
+```
+
+### Examples for manual tooling instalation
+
+#### wabt
 
 Follow this [link](https://github.com/WebAssembly/wabt?tab=readme-ov-file#installing-prebuilt-binaries) to install
 pre-build binaries. E.g. for Fedora I used:
@@ -17,11 +36,11 @@ pre-build binaries. E.g. for Fedora I used:
 sudo dnf install wabt
 ```
 
-### wasm3
+#### wasm3
 
 I actually installed it from source.
 
-#### For Fedora
+##### For Fedora
 
 ```shell
 # install missing dependencies
@@ -44,7 +63,7 @@ Wasm3 v0.5.1 on x86_64
 Build: Dec 27 2024 15:34:31, GCC 13.3.1 20240913 (Red Hat 13.3.1-3)
 ```
 
-#### For Ubuntu / POP!_OS
+##### For Ubuntu / POP!_OS
 
 
 ```shell
@@ -67,7 +86,7 @@ sudo make install
 ...
 ```
 
-### LLVM
+#### LLVM
 
 LLVM - is a compiler toolkit that serves as the basis of Rust, Swift, Julia and many more.
 
@@ -111,7 +130,7 @@ llc --version | grep wasm
     wasm64      - WebAssembly 64-bit
 ```
 
-### Emscripten 
+#### Emscripten 
 
 The [recommended approach](https://emscripten.org/docs/getting_started/downloads.html#installation-instructions-using-the-emsdk-recommended)
 is to, again, install it from sources:
