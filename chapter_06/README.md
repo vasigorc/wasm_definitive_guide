@@ -63,3 +63,80 @@ Project under [bitmap](./bitmap) directory showcases porting an exsting (third-p
 
 Emscripten has "drop-in replacements" for tools like `cc`, `make`, and `configure`. The book's author, Brian Sletten,
 has chosen [Arash Partow's website](https://www.partow.net/) to pick from a collection of useful C++ code.
+
+Navigate inside `bitmap` with `cd bitmap` and run `make` to generate `.wasm` and `.js` files:
+
+```shell
+[nix-shell:~/repos/wasm_definitive_guide/chapter_06/bitmap]$ make
+em++ -ansi -pedantic-errors -Wall -Wall -Werror -Wextra -o bitmap_test.js bitmap_test.cpp -L/usr/lib -lstdc++ -lm -s FORCE_FILESYSTEM=1 -s ALLOW_MEMORY_GROWTH=1  -s INVOKE_RUN=0 -s EXPORTED_RUNTIME_METHODS="['callMain']"
+cache:INFO: generating system asset: symbol_lists/1efd99bf593fac835273a46f24baa9f8895acf5d.json... (this will be cached in "/home/vasilegorcinschi/.emscripten_cache/symbol_lists/1efd99bf593fac835273a46f24baa9f8895acf5d.json" for subsequent builds)
+cache:INFO:  - ok
+```
+
+### Compiler options building with Emscripten
+
+Here are the explanations for some of the flags and options used in [Makefile](bitmap/Makefile).
+
+> This is not the same as the original Makefile from the website above. The original one used C++ compiler (`g++`)
+
+- `COMPILER`: used `em++` to build with Emscripten
+- `OPTIONS`, for compiling options: 
+  - `FORCE_FILESYSTEM=1` - Our library expects to be able to write to the filesystem. Out of the box, it is not alled for JavaScript apps running in browsers. By enabling this flag, we enable a filesystem abstraction that will write to local storage available by adding a compiler directive. Thus Emscripten, will simulate a filesystem.
+  - `ALLOW_MEMORY_GROWTH=1` - This simulates WebAssembly's memory module, that we've previously declared manually (64B per page with ability to demand more pages).
+  - `INVOKE_RUN=0` - Doesn't invoke the program, when it is loaded
+  - `EXPORTED_RUNTIME_METHODS="['callMain']"` - Used in conjunction, with the previous flag, points to the method that will launch the program
+- `LINKER_OPT`, libraries that our programs will need to be linked to.
+
+### Explorting the project
+
+Run a local Python3 provided HTTP server as usual with:
+
+```shell
+# assumes presence of python3 on your host system
+python3 -m http.server 10003
+```
+
+Click `Load` button, you should see something like this:
+![Bitmap screeenshot](images/bitmap_screenshot.png)
+
+You may also see that you are able to read from the emulated file system using Dev Tools console in the browser:
+
+```javascript
+> var image = FS.readFile("./test20_julia_set_vga.bmp");
+<- undefined
+> image
+<- Uint8Array(2880054) [66, 77, 54, 242, 43, 0, 0, 0, 0, 0, 54, 0, 0, 0, 40, 0, 0, 0, 176, 4, 0, 0, 32, 3, 0, 0, 1, 0, 24, 0, 0, 0, 0, 0, 0, 242, 43, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, …]
+```
+
+Additionally, thanks to the swtich statement in [bitmap_image.cpp](bitmap/bitmap_image.cpp):
+
+```cpp
+int main(int argc, char **argv)
+{
+  int which = 20;
+
+  if(argc > 1) {
+    std::string::size_type sz;
+    which = std::stoi(argv[1], &sz);
+  }
+
+  switch(which) {
+  case 0:
+...
+```
+
+we can also invoke other functions from that file. 13 `test_*()` functions in the same file that require
+another bitmap image as input, for those a warning console log will be called:
+
+```javascript
+Module.callMain(["1"])
+bitmap_test.js:1546 Sorry, 1 requires reading in a file which we are not supporting yet.
+```
+
+which corresponds to this snippet from `bitmap_image.cpp`:
+
+```cpp
+  case 16:
+    printf("Sorry, %s requires reading in a file which we are not supporting yet.\n", argv[1]);    
+    break;
+```
