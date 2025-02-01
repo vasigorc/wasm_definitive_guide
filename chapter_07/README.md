@@ -65,3 +65,33 @@ drwxrwxr-x 11 vasilegorcinschi vasilegorcinschi 4.0K Feb  1 13:16 ../
 ```
 
 Thus we may notice that `sayHello` and `main` memory address associated to them, but not `printf`.
+
+On Linux we may use `objdump` to see which dynamic libraries are required for the execution of our
+binary:
+
+```shell
+[nix-shell:~/repos/wasm_definitive_guide/chapter_07]$ objdump -x a.out | grep "libc.so.6" -C 3
+         filesz 0x0000000000000260 memsz 0x0000000000000260 flags r--
+
+Dynamic Section:
+  NEEDED               libc.so.6
+  RUNPATH              /nix/store/j3nkzgjxfii9p1q4xw1b4y0y70v55i6k-nix-shell/lib:/nix/store/nqb2ns2d1lahnd5ncwmn6k84qfd7vx2k-glibc-2.40-36/lib:/nix/store/4gk773fqcsv4fh2rfkhs9bgfih86fdq8-gcc-13.3.0-lib/lib:/nix/store/bmjqxvy53752b3xfvbab6s87xq06hxbs-gcc-13.3.0-libgcc/lib
+  INIT                 0x0000000000001000
+  FINI                 0x0000000000001338
+--
+  RELACOUNT            0x0000000000000003
+
+Version References:
+  required from libc.so.6:
+    0x09691a75 0x00 05 GLIBC_2.2.5
+    0x0d696914 0x00 04 GLIBC_2.4
+    0x09691974 0x00 03 GLIBC_2.3.4
+```
+
+In this case, we may see that `lib.so.6` library si required by the binary.
+
+Similar principle is applicable in the WebAssembly context. In order to load different modules (and thus reducing disk and network usage)
+in WebAssembly we use `Table` instance.
+
+## Creating Tables in Modules
+
