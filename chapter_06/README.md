@@ -84,7 +84,10 @@ Here are the explanations for some of the flags and options used in [Makefile](b
   - `FORCE_FILESYSTEM=1` - Our library expects to be able to write to the filesystem. Out of the box, it is not alled for JavaScript apps running in browsers. By enabling this flag, we enable a filesystem abstraction that will write to local storage available by adding a compiler directive. Thus Emscripten, will simulate a filesystem.
   - `ALLOW_MEMORY_GROWTH=1` - This simulates WebAssembly's memory module, that we've previously declared manually (64B per page with ability to demand more pages).
   - `INVOKE_RUN=0` - Doesn't invoke the program, when it is loaded
-  - `EXPORTED_RUNTIME_METHODS="['callMain']"` - Used in conjunction, with the previous flag, points to the method that will launch the program
+  - `EXPORTED_RUNTIME_METHODS="['callMain', 'cwrap']"` - Used in conjunction, with the previous flag, list methods that will be available in the invoking environment
+    - `callMain` above points to the entry point of the binary
+    - `cwrap` - a convenince method from Emscripten that will generate a JavaScript for invoking a particular `C` function 
+  - `EXPORTED_FUNCTIONS="['_main', '_run_test']"` - Complementary to `EXPORTED_RUNTIME_METHODS`, only that it is applicable in the context of the target binary. This is similar to Docker's `expose` vs `publish` ports. `EXPORTED_FUNCTIONS` would stand for `expose` in this case.
 - `LINKER_OPT`, libraries that our programs will need to be linked to.
 
 ### Explorting the project
@@ -92,6 +95,8 @@ Here are the explanations for some of the flags and options used in [Makefile](b
 Run a local Python3 provided HTTP server as usual with:
 
 ```shell
+# cd into bitmap if not there already
+cd bitmap
 # assumes presence of python3 on your host system
 python3 -m http.server 10003
 ```
@@ -125,18 +130,21 @@ int main(int argc, char **argv)
 ...
 ```
 
-we can also invoke other functions from that file. 13 `test_*()` functions in the same file that require
-another bitmap image as input, for those a warning console log will be called:
+we can also load other images (select a corresponding digit from the `<select />` element. Note that
+some functions require another bitmap image as input, for those a warning console log will be called:
 
 ```javascript
 Module.callMain(["1"])
 bitmap_test.js:1546 Sorry, 1 requires reading in a file which we are not supporting yet.
 ```
 
-which corresponds to this snippet from `bitmap_image.cpp`:
+It is noteworthy that using the `FS` module we can analyze the emulated file system that is being loaded
+by WebAssembly Virtual Machine:
 
-```cpp
-  case 16:
-    printf("Sorry, %s requires reading in a file which we are not supporting yet.\n", argv[1]);    
-    break;
+```javascript
+Before test - CWD: /
+(index):87 Before test - Files: (6) ['.', '..', 'tmp', 'home', 'dev', 'proc']
+(index):93 After test - Files: (8) ['.', '..', 'tmp', 'home', 'dev', 'proc', 'test19_cartesian_canvas01.bmp', 'test19_cartesian_canvas02.bmp']
+(index):119 Uint8Array(3007058) [66, 77, 82, 226, 45, 0, 0, 0, 0, 0, 54, 0, 0, 0, 40, 0, 0, 0, 233, 3, 0, 0, 233, 3, 0, 0, 1, 0, 24, 0, 0, 0, 0, 0, 28, 226, 45, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …]
+(index):120 Successfully displayed image: test19_cartesian_canvas01.bmp
 ```
