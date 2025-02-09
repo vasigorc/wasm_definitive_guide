@@ -95,3 +95,17 @@ in WebAssembly we use `Table` instance.
 
 ## Creating Tables in Modules
 
+A new Wat keyword, `table` is introduced. This defines a collection of function references. The host can only
+invoke the behaviour through the `Table` innstance. The `funcref` type is one of two allowed types for
+this structure, the other being `externalref` that allows references to host values.
+
+When analyzing the generated `*.wasm` file we may see that `Table` section was added there as well:
+
+```shell
+vasilegorcinschi@bonobo15:~/repos/wasm_definitive_guide/chapter_07$ wasm-objdump -x math.wasm | grep -C 2 Table | xclip -sel clip
+ - func[0] sig=0
+ - func[1] sig=0
+Table[1]:
+ - table[0] type=funcref initial=2 max=2
+Export[1]:
+```
