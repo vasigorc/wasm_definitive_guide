@@ -1,9 +1,5 @@
 # Chapter 07. WebAssembly Tables
 
-> Tables are another feature of WebAssembly that allow it to be a modern software system with functional
-> dependencies that will be satisfied by modules. They provide the equivalent capability of a dynamic
-> shared library.
-
 ## Static Versus Dynamic Linking
 
 First example simply demonstrates how dynamic linking is used in C language.
@@ -109,3 +105,51 @@ Table[1]:
  - table[0] type=funcref initial=2 max=2
 Export[1]:
 ```
+
+## Dynamic Linking in WebAssembly
+
+The example of the filce [math.wat](./math.wat) deribed in the previous section only allows referring
+to the encupsulated methods `sub` and `add` via their relative indices, e.g.:
+
+```javascript
+var table = instance.exports.tbl;
+tbl.get(0)(3, 1);
+tbl.get(1)(3, 1);
+```
+
+In order to leverage referring to them by name we could leverage WebAssembly's modularization
+capability, in particular its reliance on _dynamic linking_. In [mymath.wat](./mymath.wat) we export
+named functions `myadd` and `mysub` by pointing them to the imported functions from [math2.wat](./math2.wat)
+at corrpeonding indices via `call_indirect`. Everything is wired together in [table.html](./table.html)(note that in the book's accompanying code it is called `table2.html`),
+where we:
+
+1. Create a shared `Table` instance
+2. Pass it to both modules via `importObject
+
+> Because we are dealing with two modules... Rather than waiting on a single `Promise`, we invoke
+> the `Promise.all` method, which blocks until all of the subordinate `Promises` are met. In this
+> case, it means that both modules are loaded and ready to go.
+
+Please create a symlink to common folder as in the previos chapters so that the example works:
+
+```shell
+# supposing you are in chapter_02 folder already
+ln -s ../common common
+```
+
+We can test the full set-up by usual means:
+
+```shell
+cd chapter_07
+python3 -m http.server 10003
+```
+
+and then checking the console at `localhost:10003/table.html`:
+
+```javascript
+4 + 3 = 7
+4 - 3 = 1
+```
+
+This chapter completes the introduction to the main functional elements of WebAssembly as a platform.
+The remainder of the chapters will build upon these fundamentals.
