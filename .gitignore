@@ -3,3 +3,6 @@
 
 # assembly (architecture) specific files
 *.s
+
+# default file names for generated Emscripten code
+a.out.*
