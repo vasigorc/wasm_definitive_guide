@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "strict": true,
+  },
+  "tasks": {
+    "dev": "deno run --allow-read main.ts",
+  },
+  "imports": {
+    "deno": "https://deno.land/x/deno@v1.39.4/mod.ts",
+  },
+}

@@ -57,3 +57,24 @@ file extension. Note, however, that so that the next works I had to comment the 
 (Use `node --trace-warnings ...` to show where the warning was created)
 The sum of 6 and 2 is: 8
 ```
+
+## WebAssembly and Deno
+
+Deno is a Node.js alternative that was elaborated by Node.js' creator Ryan Dahl to address Node's flaw
+of not providing any protection against running untrusted code with same priviliges as the main process' ones
+in production, e.g. Supply Chain Attack.
+
+Deno is a more secure runtime for Javascript and Typescript. Deno uses capability-based approach in secuirty, i.e.
+it requires actors to demonstrate that they have an unforgeable permission to conduct an operation.
+
+Next, unline Node.js, Deno "runs Typescript", whereas with Node.js Typescript code has to go through the transpilation
+phase first.
+
+In the first example, a simple Typescript [main file](./deno/main.ts) is run. Note that you will need to install `Deno`
+and Typescript support to make this work. I've just added those as part of the [js-module](https://github.com/vasigorc/bash-utils/blob/main/nix/js-module.nix) of
+my `nix-shell` set-up described in the main [README file](/README.md):
+
+```shell
+ vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide/chapter_08/deno   main ±  deno run --allow-read main.ts
+2 + 3 = 5
+```
