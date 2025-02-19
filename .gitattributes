@@ -1,0 +1,2 @@
+# Don't include files copied from external sources
+chapter_06/bitmap/bitmap_*.* linguist-vendored
