@@ -78,3 +78,15 @@ my `nix-shell` set-up described in the main [README file](/README.md):
  vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide/chapter_08/deno   main ±  deno run --allow-read main.ts
 2 + 3 = 5
 ```
+
+Next, we're given an example of running an example of running a Deno HTTP server:
+
+```shell
+# run the server
+ vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide/chapter_08/deno   main ±  deno run --allow-read --allow-net main-serve.ts
+HTTP webserver is running. Access it at: http://localhost:9000/
+
+# make the http request and observe result
+ vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide   main ±  curl -X GET http://localhost:9000
+2 + 3 = 5%
+```
