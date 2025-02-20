@@ -1,5 +1,8 @@
 {
   "version": "4",
+  "redirects": {
+    "https://deno.land/x/sqlite/mod.ts": "https://deno.land/x/sqlite@v3.9.1/mod.ts"
+  },
   "remote": {
     "https://deno.land/std@0.93.0/_util/assert.ts": "2f868145a042a11d5ad0a3c748dcf580add8a0dbc0e876eaa0026303a5488f58",
     "https://deno.land/std@0.93.0/async/deferred.ts": "624bef4b755b71394620508a0c234a93cb8020cbd1b04bfcdad41c174392cef6",
@@ -14,6 +17,15 @@
     "https://deno.land/std@0.93.0/io/buffer.ts": "2a92f02c1d8daaebaf13e5678ea5969c89f4fab533f687b9e7e86f49f11c3118",
     "https://deno.land/std@0.93.0/io/bufio.ts": "729ea49afacd27ed0687451c694752dcaa68250871d1c957ca886ef5d82c461f",
     "https://deno.land/std@0.93.0/io/util.ts": "843ccf667ff291ba2315c2419a54b4e76dbc7c0f6c3152f640eac4dc954e3753",
-    "https://deno.land/std@0.93.0/textproto/mod.ts": "1c89b39a079dd158893ab2e9ff79391c66049433d6ca82da7d64b32280570d51"
+    "https://deno.land/std@0.93.0/textproto/mod.ts": "1c89b39a079dd158893ab2e9ff79391c66049433d6ca82da7d64b32280570d51",
+    "https://deno.land/x/sqlite@v3.9.1/build/sqlite.js": "2afc7875c7b9c85d89730c4a311ab3a304e5d1bf761fbadd8c07bbdf130f5f9b",
+    "https://deno.land/x/sqlite@v3.9.1/build/vfs.js": "7f7778a9fe499cd10738d6e43867340b50b67d3e39142b0065acd51a84cd2e03",
+    "https://deno.land/x/sqlite@v3.9.1/mod.ts": "e09fc79d8065fe222578114b109b1fd60077bff1bb75448532077f784f4d6a83",
+    "https://deno.land/x/sqlite@v3.9.1/src/constants.ts": "90f3be047ec0a89bcb5d6fc30db121685fc82cb00b1c476124ff47a4b0472aa9",
+    "https://deno.land/x/sqlite@v3.9.1/src/db.ts": "03d0c860957496eadedd86e51a6e650670764630e64f56df0092e86c90752401",
+    "https://deno.land/x/sqlite@v3.9.1/src/error.ts": "f7a15cb00d7c3797da1aefee3cf86d23e0ae92e73f0ba3165496c3816ab9503a",
+    "https://deno.land/x/sqlite@v3.9.1/src/function.ts": "bc778cab7a6d771f690afa27264c524d22fcb96f1bb61959ade7922c15a4ab8d",
+    "https://deno.land/x/sqlite@v3.9.1/src/query.ts": "d58abda928f6582d77bad685ecf551b1be8a15e8e38403e293ec38522e030cad",
+    "https://deno.land/x/sqlite@v3.9.1/src/wasm.ts": "e79d0baa6e42423257fb3c7cc98091c54399254867e0f34a09b5bdef37bd9487"
   }
 }

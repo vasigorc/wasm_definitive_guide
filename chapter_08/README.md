@@ -86,7 +86,27 @@ Next, we're given an example of running an example of running a Deno HTTP server
  vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide/chapter_08/deno   main ±  deno run --allow-read --allow-net main-serve.ts
 HTTP webserver is running. Access it at: http://localhost:9000/
 
-# make the http request and observe result
+# make the http request and observe result in another tab
  vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide   main ±  curl -X GET http://localhost:9000
 2 + 3 = 5%
+```
+
+The final example of this chapter is another HTTP server, this time also running with an in-memory SQLLite database, built as a WebAssembly module!
+
+This is courteous of [work by Tilman Roeder](https://github.com/dyedgreen/deno-sqlite):
+
+```shell
+# run the server
+ vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide/chapter_08/deno   main ±  deno run --allow-read --allow-write --allow-net db-serve.ts
+HTTP webserver is running. Access it at: http://localhost:9000/
+
+# in another tab
+ vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide   main ±  curl -X GET http://localhost:9000
+Programming labguages that work with WebAssembly:
+
+C
+C++
+Rust
+TypeScript
+Zig
 ```
