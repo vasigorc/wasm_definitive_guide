@@ -35,3 +35,10 @@ Hence, we see _a strategy for isolating the bits that change and taking advantag
 The book itself didn't give an example of a POC project running WebGl, TensorFlow.js and native code compiled to WASM, so we
 tried to contrive one ourselves, not without help from Claude AI, lo siento! As a bonus, we will try to trigger and monitor the
 usage of native RTX 4080 Nvidia GPUs.
+
+Please create a symlink to common folder as in the previos chapters so that the example works:
+
+```shell
+# supposing you are in chapter_02 folder already
+ln -s ../common common
+```
