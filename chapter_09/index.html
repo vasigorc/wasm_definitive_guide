@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+  <head>
+    <title>TensorFlow.js + WebAssembly Image Classification</title>
+    <link rel="stylesheet" href="common/bootstrap.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tensorflow/4.15.0/tf.min.js"></script>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-md-8 offset-md-2">
+          <h1 class="mb-4">
+            Image Classification with TensorFlow.js and WebAssembly
+          </h1>
+
+          <div class="mb-3">
+            <label for="imageInput" class="form-label">Choose an image:</label>
+            <input
+              type="file"
+              class="form-control"
+              id="imageInput"
+              accept="image/*"
+            />
+          </div>
+
+          <div class="card mb-3">
+            <div class="card-body">
+              <img
+                id="imagePreview"
+                class="img-fluid"
+                style="max-height: 300px"
+              />
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">Predictions</div>
+            <div class="card-body">
+              <div id="output"></div>
+            </div>
+          </div>
+
+          <div class="mt-3">
+            <div class="progress">
+              <div
+                class="progress-bar"
+                id="gpuProgress"
+                role="progressbar"
+                style="width: 0%"
+              ></div>
+            </div>
+            <small class="text-muted">GPU Utilization indicator</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="image_processor.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>

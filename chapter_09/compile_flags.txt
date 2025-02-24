@@ -1,0 +1,4 @@
+-std=c++14
+-I/nix/store/akja3m50phys96rcbnng18mqj9xvmmkc-emscripten-3.1.64/share/emscripten/system/include
+-I/nix/store/akja3m50phys96rcbnng18mqj9xvmmkc-emscripten-3.1.64/share/emscripten/system/lib/libcxx/include
+-I/nix/store/akja3m50phys96rcbnng18mqj9xvmmkc-emscripten-3.1.64/share/emscripten/system/lib/libc/musl/include
