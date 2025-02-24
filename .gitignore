@@ -6,3 +6,6 @@
 
 # default file names for generated Emscripten code
 a.out.*
+
+# Emscripten generated file in chapter_09
+image_processor.js
