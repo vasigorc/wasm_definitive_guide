@@ -9,3 +9,6 @@ a.out.*
 
 # Emscripten generated file in chapter_09
 image_processor.js
+
+# Rust generated file in chapter_10
+add
