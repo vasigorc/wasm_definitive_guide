@@ -38,3 +38,20 @@ First a straitghtforward example is given of compiling and running a rust file i
  vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide/chapter_10   main  ./add
 2 + 3: 5
 ```
+
+We can run the same code with `wasmer` by compiling it for `wasm32-unknown-unknown` target like such:
+
+```shell
+vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide/chapter_10   main ±  rustc -A dead_code --target wasm32-unknown-unknown -O --crate-type=cdylib add.rs -o add.wasm
+vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide/chapter_10   main ±  wasmer run add.wasm -i add 2 3
+5
+```
+
+We may run the same file in the browser similary how we did with the C code in the previous chapters:
+
+```shell
+ln -s ../common common
+python3 -m htttp.server 10003
+```
+
+![Two plus three](./images/twoplusthree.png)
