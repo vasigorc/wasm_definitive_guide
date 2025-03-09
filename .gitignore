@@ -12,3 +12,6 @@ image_processor.js
 
 # Rust generated file in chapter_10
 add
+
+# Rust generated binaries' folders
+target

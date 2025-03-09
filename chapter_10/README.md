@@ -55,3 +55,39 @@ python3 -m htttp.server 10003
 ```
 
 ![Two plus three](./images/twoplusthree.png)
+
+## wasm-bindgen
+
+Cargo project was created like so (note `vcs=none`):
+
+```shell
+vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide/chapter_10   main ±  cargo new --lib hello-wasm-bindgen --vcs=none
+    Creating library `hello-wasm-bindgen` package
+note: see more `Cargo.toml` keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+```
+
+### Why is the `crate-type` set to `cdylib`?
+
+1. **C-compatible Dynamic Library:**
+   - `cdylib` stands for "C-compatible dynamic library"
+   - It instructs the Rust compiler to produce a binary that can be loaded by _non-Rust_ programs
+
+2. **WebAssembly-specific reasons:**
+   - When targeting WebAssembly with `wasm-bindgen`, the compiled output needs to be a standalone module that can be loaded by JavaScript
+   - It produces a minimal binary by excluding Rust-specific metadata that's not needed for interoperability
+   - It only exports symbols that are explicitly marked for export (like functions tagged with `#[wasm_bindgen]`)
+
+3. **Differences from other crate types:**
+   - Without `cdylib`, Rust would default to producing a `rlib` (Rust library), which contains Rust-specific metadata not needed for WebAssembly
+   - Other options like `staticlib` or `dylib` are designed for different use cases and would include unnecessary elements
+
+## Why it's necessary for wasm-bindgen
+
+`wasm-bindgen` works by generating JavaScript glue code that interfaces with the 
+compiled WebAssembly module. The toolchain expects Rust code to be compiled
+as a self-contained library that exposes specific functions, which is exactly what
+the `cdylib` format provides.
+
+Without this setting, the `wasm-bindgen` tools would not be able to properly interact
+with the compiled Rust code, resulting in errors during the build process or runtime
+issues when trying to use your WebAssembly module from JavaScript.
