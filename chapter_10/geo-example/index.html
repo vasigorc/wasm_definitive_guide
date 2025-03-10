@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>parsing-example</title>
+  </head>
+  <body>
+    <script type="module">
+      import init, { describe_location } from "./pkg/geo_example.js";
+      init().then(() => {
+        getLocation();
+      });
+
+      var output = document.getElementById("output");
+
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition, showError);
+        } else {
+          output.innerHTML = "Geolocation is not supported by this browser.";
+        }
+      }
+
+      function showPosition(position) {
+        output.innerHTML =
+          "Your position: " +
+          "<br>Latitude: " +
+          position.coords.latitude +
+          "<br>Longitude: " +
+          position.coords.longitude;
+
+        describe_location(position.coords.latitude, position.coords.longitude);
+      }
+
+      function showError(error) {
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            output.textContent = "User denied the request for Geolocation.";
+            break;
+          case error.POSITION_UNAVAILABLE:
+            output.textContent = "Location information is unavailable.";
+            break;
+          case error.TIMEOUT:
+            output.textContent = "The request to get user location timed out.";
+            break;
+          case error.UNKNOWN_ERROR:
+            output.textContent = "An unknown error occurred.";
+            break;
+        }
+      }
+    </script>
+
+    <p>Open up your JavaScript console and allow the browser to see your location</p>
+    <p id="output"></p>
+  </body>
+</html>

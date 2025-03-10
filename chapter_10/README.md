@@ -134,4 +134,8 @@ function and uses it to display a message when the `say_hello` function is calle
 ### geo-example
 
 One last example will try to use a more involved Rust logic to calculate a user's relative
-position to where I lived at the time of writing this.
+position to where I lived at the time of writing this documentation. The project is built
+in the same manner as the previous examples. Running it, you may see that native code
+generated from Rust is called from JavaScript:
+
+![Rust pattern matching code used in JavaScript](images/geo_example.png)
