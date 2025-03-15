@@ -75,3 +75,74 @@ the host environment where our code will run.
 
 The samw WASI form of the WebAssembly module will run on Linux or Windows. WebAssembly makes the code
 portable, WASI does the same thing to your application by compyling with the host's expectactions.
+
+## Capabilities-Based Security
+
+Similarly to WebAssembly not granting arbitrary code access to memory, WASI does not give access to 
+resources, such as file handles or network connections, process files, etc. Instead, these resources
+will be made available via unforgeable, opaque handles that provide "the capability to the code".
+
+In the following example we have a program that:
+- creates a file
+- writes some text to it
+- reads that text back in
+
+At the time of writing of this book, this code was designed somewhat different, in that the file was
+written to the current directory, and WASI runtime would complain about not being
+able to obtain file handle - we were required to explicitly specify the file path with `--dir=.` flag.
+
+The fact that the run time requirements changed over time which reflects  the evolution of
+the WASI specification:
+
+1. **Default preopened directories**: newer versions of `wasmer` runtime include
+current directory (just like `/tmp`) as a default preopened directory.
+2. **Refined capability-based security**: while the security model remains
+intact, the implementation details and default granted capabilities have 
+been refined.
+
+To prove the initial point and intent of this exercise we will instead try to
+create the same file in the _$HOME_ directory. We'll compile this program with the
+`wasm32-wasi` target and run it with `wasmer`, just as we did in the previous example:
+
+```shell
+ ✘ vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide/chapter_11/hello-fs   main ±  wasmer run target/wasm32-wasi/release/hello-fs.wasm --dir=$HOME
+thread 'main' panicked at src/main.rs:11:45:
+Could not determine home directory
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: RuntimeError: unreachable
+    at __rust_start_panic (hello_fs-d54b545e31f6233f.wasm[128]:0x604e)
+    at rust_panic (hello_fs-d54b545e31f6233f.wasm[123]:0x5dfd)
+    at std::panicking::rust_panic_with_hook::h5aa58467fd511e58 (hello_fs-d54b545e31f6233f.wasm[122]:0x5b21)
+    at std::panicking::begin_panic_handler::{{closure}}::hddafbb74422ab5b5 (hello_fs-d54b545e31f6233f.wasm[111]:0x4f6b)
+    at std::sys_common::backtrace::__rust_end_short_backtrace::hee1cd7216ef8c172 (hello_fs-d54b545e31f6233f.wasm[110]:0x4e9b)
+    at rust_begin_unwind (hello_fs-d54b545e31f6233f.wasm[117]:0x5629)
+    at core::panicking::panic_fmt::hdff7d27056516045 (hello_fs-d54b545e31f6233f.wasm[204]:0xb46c)
+    at hello_fs::main::hbe56440db5fa7da6 (hello_fs-d54b545e31f6233f.wasm[19]:0x70c)
+    at std::sys_common::backtrace::__rust_begin_short_backtrace::h2793ed32608d29ba (hello_fs-d54b545e31f6233f.wasm[13]:0x475)
+    at std::rt::lang_start::{{closure}}::h479714d13e673507 (hello_fs-d54b545e31f6233f.wasm[14]:0x484)
+    at std::rt::lang_start_internal::hdc5a291adcbf2591 (hello_fs-d54b545e31f6233f.wasm[75]:0x29a1)
+    at __main_void (hello_fs-d54b545e31f6233f.wasm[20]:0xa9d)
+    at _start (hello_fs-d54b545e31f6233f.wasm[12]:0x450)
+╰─▶ 1: RuntimeError: unreachable
+           at __rust_start_panic (hello_fs-d54b545e31f6233f.wasm[128]:0x604e)
+           at rust_panic (hello_fs-d54b545e31f6233f.wasm[123]:0x5dfd)
+           at std::panicking::rust_panic_with_hook::h5aa58467fd511e58 (hello_fs-d54b545e31f6233f.wasm[122]:0x5b21)
+           at std::panicking::begin_panic_handler::{{closure}}::hddafbb74422ab5b5 (hello_fs-d54b545e31f6233f.wasm[111]:0x4f6b)
+           at std::sys_common::backtrace::__rust_end_short_backtrace::hee1cd7216ef8c172 (hello_fs-d54b545e31f6233f.wasm[110]:0x4e9b)
+           at rust_begin_unwind (hello_fs-d54b545e31f6233f.wasm[117]:0x5629)
+           at core::panicking::panic_fmt::hdff7d27056516045 (hello_fs-d54b545e31f6233f.wasm[204]:0xb46c)
+           at hello_fs::main::hbe56440db5fa7da6 (hello_fs-d54b545e31f6233f.wasm[19]:0x70c)
+           at std::sys_common::backtrace::__rust_begin_short_backtrace::h2793ed32608d29ba (hello_fs-d54b545e31f6233f.wasm[13]:0x475)
+           at std::rt::lang_start::{{closure}}::h479714d13e673507 (hello_fs-d54b545e31f6233f.wasm[14]:0x484)
+           at std::rt::lang_start_internal::hdc5a291adcbf2591 (hello_fs-d54b545e31f6233f.wasm[75]:0x29a1)
+           at __main_void (hello_fs-d54b545e31f6233f.wasm[20]:0xa9d)
+           at _start (hello_fs-d54b545e31f6233f.wasm[12]:0x450)
+```
+
+Now, with the newer version of `wasmer` we would have to explictly specify that we want to allow access to _$HOME_ and pass
+the `$HOME` environment variable to the WASI runtime:
+
+```shell
+ ✘ vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide/chapter_11/hello-fs   main ±  wasmer run target/wasm32-wasi/release/hello-fs.wasm --dir=$HOME --env HOME=$HOME
+Contents of /home/vasilegorcinschi/hello.txt: Hello, world!
+```
