@@ -26,7 +26,7 @@ that programs permitted to access it can expect to be available: a functionality
 which would work across programming languages and environments.
 
 A simple `hello world` application written in Rust and compiled for WASM target
-will not be able to run on a Linux host (remember, previously we were able to use file 
+will not be able to run on a Linux host (remember, previously we were able to use file
 built for this target in the browser).
 
 ```shell
@@ -56,21 +56,21 @@ example above - it is the method that calls the `main` function.
 If we were to change the targeted platform from `wasm-*` to `wasi-*` things would change:
 
 ```shell
- ✘ vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide/chapter_11/hello-world   main ±  cargo build --target wasm32-wasi --release
+ ✘ vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide/chapter_11/hello-world   main ±  cargo build --target wasm32-wasip1 --release
    Compiling hello-world v0.1.0 (/home/vasilegorcinschi/repos/wasm_definitive_guide/chapter_11/hello-world)
     Finished `release` profile [optimized] target(s) in 0.23s
- vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide/chapter_11/hello-world   main ±  wasmer target/wasm32-wasi/release/hello-world.wasm
+ vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide/chapter_11/hello-world   main ±  wasmer target/wasm32-wasip1/release/hello-world.wasm
 Hello, world!
-vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide/chapter_11/hello-world   main ±  wasm-objdump -x target/wasm32-wasi/release/hello-world.wasm | grep -A 3 Export
+vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide/chapter_11/hello-world   main ±  wasm-objdump -x target/wasm32-wasip1/release/hello-world.wasm | grep -A 3 Export
 Export[3]:
  - memory[0] -> "memory"
  - func[5] <_start> -> "_start"
  - func[11] <__main_void> -> "__main_void"
 ```
 
-When compiled for the `wasi-*` target, the WASM module exports a `_start` function that is responsible 
+When compiled for the `wasi-*` target, the WASM module exports a `_start` function that is responsible
 for calling the `main` function. WASI also provides a convenient way for a WASM module to _import_ functionality
-that it needs to execute. `wasm32-wasi` backend emits calls to a standard library that will be provided by
+that it needs to execute. `wasm32-wasip1` backend emits calls to a standard library that will be provided by
 the host environment where our code will run.
 
 The samw WASI form of the WebAssembly module will run on Linux or Windows. WebAssembly makes the code
@@ -78,11 +78,12 @@ portable, WASI does the same thing to your application by compyling with the hos
 
 ## Capabilities-Based Security
 
-Similarly to WebAssembly not granting arbitrary code access to memory, WASI does not give access to 
+Similarly to WebAssembly not granting arbitrary code access to memory, WASI does not give access to
 resources, such as file handles or network connections, process files, etc. Instead, these resources
 will be made available via unforgeable, opaque handles that provide "the capability to the code".
 
 In the following example we have a program that:
+
 - creates a file
 - writes some text to it
 - reads that text back in
@@ -91,21 +92,21 @@ At the time of writing of this book, this code was designed somewhat different, 
 written to the current directory, and WASI runtime would complain about not being
 able to obtain file handle - we were required to explicitly specify the file path with `--dir=.` flag.
 
-The fact that the run time requirements changed over time which reflects  the evolution of
+The fact that the run time requirements changed over time which reflects the evolution of
 the WASI specification:
 
 1. **Default preopened directories**: newer versions of `wasmer` runtime include
-current directory (just like `/tmp`) as a default preopened directory.
+   current directory (just like `/tmp`) as a default preopened directory.
 2. **Refined capability-based security**: while the security model remains
-intact, the implementation details and default granted capabilities have 
-been refined.
+   intact, the implementation details and default granted capabilities have
+   been refined.
 
 To prove the initial point and intent of this exercise we will instead try to
 create the same file in the _$HOME_ directory. We'll compile this program with the
-`wasm32-wasi` target and run it with `wasmer`, just as we did in the previous example:
+`wasm32-wasip1` target and run it with `wasmer`, just as we did in the previous example:
 
 ```shell
- ✘ vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide/chapter_11/hello-fs   main ±  wasmer run target/wasm32-wasi/release/hello-fs.wasm --dir=$HOME
+ ✘ vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide/chapter_11/hello-fs   main ±  wasmer run target/wasm32-wasip1/release/hello-fs.wasm --dir=$HOME
 thread 'main' panicked at src/main.rs:11:45:
 Could not determine home directory
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
@@ -143,6 +144,7 @@ Now, with the newer version of `wasmer` we would have to explictly specify that 
 the `$HOME` environment variable to the WASI runtime:
 
 ```shell
- ✘ vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide/chapter_11/hello-fs   main ±  wasmer run target/wasm32-wasi/release/hello-fs.wasm --dir=$HOME --env HOME=$HOME
+ ✘ vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide/chapter_11/hello-fs   main ±  wasmer run target/wasm32-wasip1/release/hello-fs.wasm --dir=$HOME --env HOME=$HOME
 Contents of /home/vasilegorcinschi/hello.txt: Hello, world!
 ```
+

@@ -16,10 +16,11 @@ case run the following:
 ```shell
  ✘ vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide   main  rustup target list | grep wasm
 wasm32-unknown-emscripten
-wasm32-unknown-unknown
-wasm32-wasi
-wasm32-wasip1
+wasm32-unknown-unknown (installed)
+wasm32-wasip1 (installed)
 wasm32-wasip1-threads
+wasm32-wasip2
+wasm32v1-none
 
 ```
 
@@ -69,10 +70,12 @@ note: see more `Cargo.toml` keys and their definitions at https://doc.rust-lang.
 ### Why is the `crate-type` set to `cdylib`?
 
 1. **C-compatible Dynamic Library:**
+
    - `cdylib` stands for "C-compatible dynamic library"
    - It instructs the Rust compiler to produce a binary that can be loaded by _non-Rust_ programs
 
 2. **WebAssembly-specific reasons:**
+
    - When targeting WebAssembly with `wasm-bindgen`, the compiled output needs to be a standalone module that can be loaded by JavaScript
    - It produces a minimal binary by excluding Rust-specific metadata that's not needed for interoperability
    - It only exports symbols that are explicitly marked for export (like functions tagged with `#[wasm_bindgen]`)
@@ -83,7 +86,7 @@ note: see more `Cargo.toml` keys and their definitions at https://doc.rust-lang.
 
 ## Why it's necessary for wasm-bindgen
 
-`wasm-bindgen` works by generating JavaScript glue code that interfaces with the 
+`wasm-bindgen` works by generating JavaScript glue code that interfaces with the
 compiled WebAssembly module. The toolchain expects Rust code to be compiled
 as a self-contained library that exposes specific functions, which is exactly what
 the `cdylib` format provides.
