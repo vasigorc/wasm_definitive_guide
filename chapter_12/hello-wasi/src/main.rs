@@ -6,7 +6,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let compiler = Cranelift::new();
     let engine = Engine::default();
     let mut store = Store::new(compiler);
-    let module = Module::from_file(&engine, "common/hello.wat")?;
+    let module = Module::from_file(&engine, "../common/hello.wat")?;
     let import_object = imports! {};
     let instance = Instance::new(&mut store, &module, &import_object)?;
 
