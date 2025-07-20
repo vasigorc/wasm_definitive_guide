@@ -1,6 +1,6 @@
 use std::error::Error;
 
-use wasmer::*;
+use wasmer::{Cranelift, Engine, Instance, Module, Store, imports};
 
 fn main() -> Result<(), Box<dyn Error>> {
     let compiler = Cranelift::new();

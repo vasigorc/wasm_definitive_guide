@@ -32,3 +32,15 @@ You are 21
 ## Multi-value return
 
 The point of this MVP is to be able to return two+ values from a function, similar to tuples in [Python](https://realpython.com/python-tuple/#returning-tuples-from-functions) or [Rust](https://doc.rust-lang.org/rust-by-example/primitives/tuples.html).
+
+To compile and run the code, repeat the commands above but from within a new directory:
+
+```bash
+ ✘ vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide/chapter_12/hello-mvr   main ±  cargo build --release
+    Compiling hello-mvr v0.1.0 (/home/vasilegorcinschi/repos/wasm_definitive_guide/chapter_12/hello-mvr)
+     Finished `release` profile [optimized] target(s) in 0.56s
+  vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide/chapter_12/hello-mvr   main ±  cargo run --release
+     Finished `release` profile [optimized] target(s) in 0.04s
+      Running `target/release/hello-mvr`
+ Swapping 13 and 43 produces 43 and -371436560.
+```

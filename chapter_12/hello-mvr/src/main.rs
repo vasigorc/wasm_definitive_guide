@@ -3,15 +3,18 @@ use std::error::Error;
 use wasmer::*;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let compiler = Cranelift::new();
-    let engine = Engine::default();
-    let mut store = Store::new((compiler));
-    let module = Module::from_file(&engine, "mvr.wat");
-    let import_object = imports! {};
+    let mut store = Store::default();
+    let module = Module::from_file(&store, "mvr.wat")?;
 
     let callback_func = Function::new_typed(&mut store, |a: i32, b: i32| -> (i32, i32) { (b, a) });
 
-    let instance = Instance::new(&mut store, &module, &[callback_func.into()])?;
+    let import_object = imports! {
+        "" => {
+            "swap" => callback_func,
+        }
+    };
+
+    let instance = Instance::new(&mut store, &module, &import_object)?;
 
     let myfunc = instance
         .exports
