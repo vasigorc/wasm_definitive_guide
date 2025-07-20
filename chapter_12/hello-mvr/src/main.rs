@@ -18,8 +18,8 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let myfunc = instance
         .exports
-        .get_typed_function::<(i32, i32), (i32, i32)>(&mut store, "myfunc")?;
-    let (a, b) = myfunc.call(&mut store, 13i32, 43i32)?;
+        .get_typed_function::<(i32, i32), (i32, i32)>(&store, "myfunc")?;
+    let (a, b) = myfunc.call(&mut store, 13, 43)?;
     println!("Swapping {} and {} produces {} and {}.", 13, 43, a, b);
 
     Ok(())
