@@ -28,3 +28,7 @@ And, in order to build and run:
      Running `target/release/hello-wasi`
 You are 21
 ```
+
+## Multi-value return
+
+The point of this MVP is to be able to return two+ values from a function, similar to tuples in [Python](https://realpython.com/python-tuple/#returning-tuples-from-functions) or [Rust](https://doc.rust-lang.org/rust-by-example/primitives/tuples.html).
