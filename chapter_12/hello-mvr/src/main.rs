@@ -3,7 +3,13 @@ use std::error::Error;
 use wasmer::*;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let mut store = Store::default();
+    let compiler = Cranelift::default();
+
+    let mut features = Features::new();
+    features.multi_value(true);
+
+    let engine = EngineBuilder::new(compiler).set_features(Some(features));
+    let mut store = Store::new(engine);
     let module = Module::from_file(&store, "mvr.wat")?;
 
     let callback_func = Function::new_typed(&mut store, |a: i32, b: i32| -> (i32, i32) { (b, a) });
