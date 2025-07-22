@@ -33,6 +33,9 @@ You are 21
 
 The point of this MVP is to be able to return two+ values from a function, similar to tuples in [Python](https://realpython.com/python-tuple/#returning-tuples-from-functions) or [Rust](https://doc.rust-lang.org/rust-by-example/primitives/tuples.html).
 
+From Chapter 2, the result of a WebAssembly function is found at the top of the stack, so the top several elements
+of the stack could be interpreted as multimple return values.
+
 Unlike, the previous example, this one uses [Wasmtime](https://docs.wasmtime.dev/) (same, as in the book), and not [Wasmer](https://docs.wasmer.io/), just because
 I failed to have a working example using `Wasmer` that would look equally concise as the `Wasmtime`'s - [link](https://github.com/wasmerio/wasmer/discussions/5647).
 
@@ -47,3 +50,12 @@ To compile and run the code, repeat the commands above but from within a new dir
       Running `target/release/hello-mvr`
  Swapping 13 and 43 produces 43 and 13.
 ```
+
+## Reference Types
+
+The previous sub-section could be viewed as a prerequisite for the specification described in this one: ability to specify references to opaque handlers, which
+could serve as a bridge for adding garbage collection, having typed references, or using exception handling. At the same time, the goal of this specification
+was to not let WebAssembly modules have access by default to opaque system resource references. This is achieved by manipulating `Table` members (recall from Chapter 7),
+growing its instance size, and passing `externref` references between WebAssembly modules and their environments.
+
+`Wasmtime` supports to make `externref` references.
