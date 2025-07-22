@@ -1,31 +1,20 @@
 use std::error::Error;
 
-use wasmer::*;
+use wasmtime::*;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let compiler = Cranelift::default();
+    let engine = Engine::default();
+    let mut store = Store::new(&engine, ());
+    let module = Module::from_file(&engine, "mvr.wat")?;
 
-    let mut features = Features::new();
-    features.multi_value(true);
+    let callback_func = Func::wrap(&mut store, |a: i32, b: i32| -> (i32, i32) { (b, a) });
 
-    let engine = EngineBuilder::new(compiler).set_features(Some(features));
-    let mut store = Store::new(engine);
-    let module = Module::from_file(&store, "mvr.wat")?;
+    let instance = Instance::new(&mut store, &module, &[callback_func.into()])?;
 
-    let callback_func = Function::new_typed(&mut store, |a: i32, b: i32| -> (i32, i32) { (b, a) });
+    let myfunc = instance.get_typed_func::<(i32, i32), (i32, i32)>(&mut store, "myfunc")?;
 
-    let import_object = imports! {
-        "" => {
-            "swap" => callback_func,
-        }
-    };
+    let (a, b) = myfunc.call(&mut store, (13, 43))?;
 
-    let instance = Instance::new(&mut store, &module, &import_object)?;
-
-    let myfunc = instance
-        .exports
-        .get_typed_function::<(i32, i32), (i32, i32)>(&store, "myfunc")?;
-    let (a, b) = myfunc.call(&mut store, 13, 43)?;
     println!("Swapping {} and {} produces {} and {}.", 13, 43, a, b);
 
     Ok(())

@@ -4,4 +4,4 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-wasmer = "5.0.6"
+wasmtime = "34.0.2"

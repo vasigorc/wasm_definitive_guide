@@ -33,6 +33,9 @@ You are 21
 
 The point of this MVP is to be able to return two+ values from a function, similar to tuples in [Python](https://realpython.com/python-tuple/#returning-tuples-from-functions) or [Rust](https://doc.rust-lang.org/rust-by-example/primitives/tuples.html).
 
+Unlike, the previous example, this one uses [Wasmtime](https://docs.wasmtime.dev/) (same, as in the book), and not [Wasmer](https://docs.wasmer.io/), just because
+I failed to have a working example using `Wasmer` that would look equally concise as the `Wasmtime`'s - [link](https://github.com/wasmerio/wasmer/discussions/5647).
+
 To compile and run the code, repeat the commands above but from within a new directory:
 
 ```bash
@@ -42,5 +45,5 @@ To compile and run the code, repeat the commands above but from within a new dir
   vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide/chapter_12/hello-mvr   main ±  cargo run --release
      Finished `release` profile [optimized] target(s) in 0.04s
       Running `target/release/hello-mvr`
- Swapping 13 and 43 produces 43 and -371436560.
+ Swapping 13 and 43 produces 43 and 13.
 ```
