@@ -68,3 +68,39 @@ Retrieved external reference: "secret key" from table slot 3
 Retrieved external reference array: "[1, 2, 3, 4]" from table slot 4
 Received "secret key" back from calling extern-ref aware function.`
 ```
+
+## Module Linking
+
+This last MVP is about allowing modules to be imported through a variety of mechanisms and styles: to have a dependency on a module that will provide this behavior
+without having to import individual methods one by one. The strategy for achieving this is the ability to describe types of modules and allow different implementations
+to satisfy those types. There is a new textual format for describing this way of interfacing in WebAssembly - files describing modules' dependencies end in _.wit_.
+
+The example in this section uses `Wasmtime` runtime. This example shows linking of two modules: one that depends on the other and one that depends on having a WASI
+capability of writing to the console. For this we must add `wasmtime-wasi` dependency. This is an implementation of the standard WASI functionality that we are
+going to link against in the following example.
+
+> In the [first module](hello-modlink/linking1.wat) we import a function called `double` that will take an `i32`, double it, and return an `i32`. We are also
+> importing a convenience function called `log` that will print a string in a `Memory` at the given offset and of the given length.
+> We will also import a `Memory` instance to use and a global variable representing an offset to use as the location of our activity.
+
+The [second module](hello-modlink/linking2.wat) defines a type for a function that takes four `i32` parameters and returns an `i32`.
+
+> This type will correspond to the `fd_write` method that we will import from the WASI namespace `wasi_snapshot_preview1`. There
+> is also a simple function called `double` that loads the `i32` parameter sent in to the stack, follow-up with the constant 2,
+> and then invokes the `i32.mul` instruction, which will pop off the top two stack values, multiply them, and write the result
+> back to the top of the stack.
+
+The exported `log` function invokes `fd_write`. This module also exports a `Memory` instance and a `global` variable indicating the current offset to write values into.
+
+Note that the Rust code is slightly different than in the book - [`Wasmtime`'s example](https://github.com/bytecodealliance/wasmtime/blob/main/examples/linking.rs) evolves over time.
+
+Building and running this examples prints:
+
+```bash
+cargo build --release
+    Finished `release` profile [optimized] target(s) in 0.07s
+cargo run --release
+    Finished `release` profile [optimized] target(s) in 0.07s
+     Running `target/release/hello-modlink`
+Hello, world!
+```
