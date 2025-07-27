@@ -1,0 +1,60 @@
+<!doctype >
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <script type="module">
+      import {
+        bigInt,
+        bulkMemory,
+        exceptions,
+        exceptionsFinal,
+        extendedConst,
+        gc,
+        jsStringBuiltins,
+        jspi,
+        memory64,
+        multiValue,
+        mutableGlobals,
+        referenceTypes,
+        saturatedFloatToInt,
+        signExtensions,
+        streamingCompilation,
+        relaxedSimd,
+        simd,
+        tailCall,
+        threads,
+        typeReflection,
+        typedFunctionReferences,
+      } from "https://unpkg.com/wasm-feature-detect?module";
+
+      function test(test, promise) {
+        promise().then((supported) => {
+          console.log("Test: " + test + " is " + supported);
+        });
+      }
+
+      test("BIGINT", bigInt);
+      test("BULK MEMORY", bulkMemory);
+      test("EXCEPTIONS", exceptions);
+      test("EXCEPTIONS FINAL", exceptionsFinal);
+      test("EXTENDED CONST", extendedConst);
+      test("GC", gc);
+      test("JS STRING BUILTINS", jsStringBuiltins);
+      test("JSPI", jspi);
+      test("MULTIVALUE", multiValue);
+      test("MEMORY 64", memory64);
+      test("MUTABLEGLOBALS", mutableGlobals);
+      test("REFERENCETYPES", referenceTypes);
+      test("NONTRAPPING F-TO-I", saturatedFloatToInt);
+      test("SIGN EXTENSIONS", signExtensions);
+      test("STREAMING COMPILATION", streamingCompilation);
+      test("RELAXED SIMD", relaxedSimd);
+      test("SIMD", simd);
+      test("TAIL CALL", tailCall);
+      test("THREADS", threads);
+      test("TYPE REFLECTION", typeReflection);
+      test("TYPED FUNCTION REFERENCES", typedFunctionReferences);
+    </script>
+  </head>
+  <body></body>
+</html>

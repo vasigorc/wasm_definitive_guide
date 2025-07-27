@@ -104,3 +104,43 @@ cargo run --release
      Running `target/release/hello-modlink`
 Hello, world!
 ```
+
+## Feature Testing
+
+Using [this project](https://github.com/GoogleChromeLabs/wasm-feature-detect) we may test which browser supports which WASM MVP.
+
+Note that [detector/index.html](detector/index.html) includes new modules compared to those listed in the book.
+
+1. Run this from `chapter12_detector`:
+
+```bash
+python3 -m http.server 10003
+```
+
+2. Open your browser and navigate to: `http://localhost:10003/`
+
+It would seem that Google Chrome version 138.0.7204.168 (browser that I used for testing this) supports all but one module:
+
+```javascript
+Test: BULK MEMORY is true
+Test: EXCEPTIONS is true
+Test: EXCEPTIONS FINAL is true
+Test: EXTENDED CONST is true
+Test: GC is true
+Test: JSPI is true
+Test: MULTIVALUE is true
+Test: MEMORY 64 is true
+Test: MUTABLEGLOBALS is true
+Test: REFERENCETYPES is true
+Test: NONTRAPPING F-TO-I is true
+Test: SIGN EXTENSIONS is true
+Test: STREAMING COMPILATION is true
+Test: RELAXED SIMD is true
+Test: SIMD is true
+Test: TAIL CALL is true
+Test: THREADS is false
+Test: TYPE REFLECTION is false
+Test: TYPED FUNCTION REFERENCES is true
+Test: BIGINT is true
+Test: JS STRING BUILTINS is true
+```
