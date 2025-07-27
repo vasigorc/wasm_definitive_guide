@@ -1,6 +1,6 @@
 # Chapter 12. Extending the WebAssembly Platform
 
-In this chapter the author looks at different specifications that have sprung up and evolved since the WebAssembly MVP.
+In this chapter the author looks at different specifications that have sprung up and evolved since the WebAssembly MVP for WebAssembly runtimes.
 
 ## WASI Runtimes
 
