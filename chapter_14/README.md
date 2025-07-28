@@ -15,5 +15,76 @@ Unlike TypeScript, AssemblyScript does not support `any` and `undefined`, neithe
 > filesystem access, or DOM manipulation, just like any other module. Those have to be provided through
 > import objects or through WASI.
 
+> AssemblyScript lives close to eh WebAssembly instruction set we have seen throughout the book. The numeric
+> types are basically what you would imagine them to be, including `i32`, `i64`, `f32`, `f64` and `usize`, which
+> is used for indexing memory.
+
 There is no support for implementing interfaces, closures, exceptions, or access modifiers for classes
 (`public`, `private`, or `protected`).
+
+## Simple example
+
+The command to generate a WebAssembly file from a TypeScript file is a little different than it was at the
+time of writing of book (`-o` instead of `-b`):
+
+```bash
+asc -h | grep -A 4 Output
+ Output
+
+  --outFile, -o         Specifies the WebAssembly output file (.wasm).
+  --textFile, -t        Specifies the WebAssembly text output file (.wat).
+  --bindings, -b        Specifies the bindings to generate (.js + .d.ts).
+asc hello.ts -o hello.wasm
+ls -alF
+total 16
+drwxr-xr-x 2 vasilegorcinschi vasilegorcinschi 4096 Jul 28 20:41 ./
+drwxr-xr-x 3 vasilegorcinschi vasilegorcinschi 4096 Jul 28 07:59 ../
+-rw-r--r-- 1 vasilegorcinschi vasilegorcinschi   60 Jul 28 07:59 hello.ts
+-rw-r--r-- 1 vasilegorcinschi vasilegorcinschi   93 Jul 28 20:41 hello.wasm
+```
+
+Further analyzing the generated WebAssembly file reveals that the compiler generated a `Memory` instance and
+an export for it. The compiler has also the function defined in the `hello.ts` file by adorning it with
+the keyword `export`. This makes it easy to use it from JavaScript:
+
+```bash
+wasm-objdump -x hello.wasm
+
+hello.wasm: file format wasm 0x1
+
+Section Details:
+
+Type[1]:
+ - type[0] (i32, i32) -> i32
+Function[1]:
+ - func[0] sig=0 <add>
+Table[1]:
+ - table[0] type=funcref initial=1 max=1
+Memory[1]:
+ - memory[0] pages: initial=0
+Global[3]:
+ - global[0] i32 mutable=0 - init i32=8
+ - global[1] i32 mutable=1 - init i32=32776
+ - global[2] i32 mutable=0 - init i32=32776
+Export[2]:
+ - func[0] <add> -> "add"
+ - memory[0] -> "memory"
+Elem[1]:
+ - segment[0] flags=0 table=0 count=0 - init i32=1
+Code[1]:
+ - func[0] size=8 <add>
+```
+
+For this example we will need the static files that were initially added in Chapter 2, and later moved to the [common](../common) folder.
+
+```bash
+ln -s ../common common
+```
+
+Run the server from the chapter's root in order that Python's HTTP server can access `common` files:
+
+```bash
+python3 -m http.server 10003
+```
+
+If you then navigate to `http://localhost:10003/hello`, and open console, you should see `42` printed out.

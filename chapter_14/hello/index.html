@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../common/bootstrap.min.css" />
+    <title>Basic AssemblyScript</title>
+    <script src="../common/utils.js"></script>
+  </head>
+  <body>
+    <script>
+      fetchAndInstantiate("hello.wasm").then(function (instance) {
+        console.log(instance.exports.add(12, 30));
+      });
+    </script>
+  </body>
+</html>
