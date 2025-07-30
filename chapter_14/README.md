@@ -88,3 +88,8 @@ python3 -m http.server 10003
 ```
 
 If you then navigate to `http://localhost:10003/hello`, and open console, you should see `42` printed out.
+
+## Working with the `Memory` model
+
+The example in the [as-mem](as_mem) directory highlights how working with a `Memory`'s module instance is possible. Here
+we grow the memory by a page to make sure that we have 64K of memory.
