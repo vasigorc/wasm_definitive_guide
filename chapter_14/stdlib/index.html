@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>AssemblyScript Standard Library</title>
+    <script src="../common/utils.js"></script>
+  </head>
+  <body>
+    <script>
+      fetchAndInstantiate("stdlib.wasm").then(function (instance) {
+        let diameter = instance.exports.diameter(2.0);
+        console.log("Diameter of a circle for a radius 2.0:" + diameter);
+        let circumference = instance.exports.circumference(2.0);
+        console.log(
+          "Circumference of a circle for a radius 2.0:" + circumference,
+        );
+        let area = instance.exports.area(2.0);
+        console.log("Area of a circle for a radius 2.0:" + area);
+      });
+    </script>
+  </body>
+</html>

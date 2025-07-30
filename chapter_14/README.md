@@ -93,3 +93,31 @@ If you then navigate to `http://localhost:10003/hello`, and open console, you sh
 
 The example in the [as-mem](as_mem) directory highlights how working with a `Memory`'s module instance is possible. Here
 we grow the memory by a page to make sure that we have 64K of memory.
+
+## Garbage Collection and the AssemblyScript Runtime
+
+A convenient way of interacting with garbage collection will be showcases later in this section. One may use GC if you tell
+AssemblyScript compiler to export access to the runtime with the `--exportRuntime` directive.
+
+> Not only that, you have the option of controlling the behavior of the runtime by using the `--runtime` parameter. This allows
+> you to specify whether it should use an incremental, minimal, stub, or even a custom pluggable implementation.
+
+So it is possible to allocate memory from a module's exported `Memory` instance, and pin and unpin references that point
+into it so that they will or will not be collected _by other processes_.
+
+## AssemblyScript Standard Library
+
+[`stdlib` from AssemblyScript](https://www.assemblyscript.org/stdlib/globals.html) is a handy library that offers
+functionality of a modern programming infrastructure. This section highlights some of that by building a set of functions
+calculating details of a circle. See [stdlib](stdlib).
+
+> Because AssemblyScript defaults to `f64` numbers, we cast them to `f32` numbers before returning the values from the
+> functions.
+
+The output in a browser's console (same steps as above to run the example):
+
+```javascript
+Diameter of a circle for a radius 2.0:4
+Circumference of a circle for a radius 2.0:12.566370964050293
+Area of a circle for a radius 2.0:12.566370964050293
+```
