@@ -121,3 +121,8 @@ Diameter of a circle for a radius 2.0:4
 Circumference of a circle for a radius 2.0:12.566370964050293
 Area of a circle for a radius 2.0:12.566370964050293
 ```
+
+## AssemblyScript Loader
+
+To exemplify the use of the `Loader`, the author actually pulled the AssemblyScript's [examples repo](https://github.com/AssemblyScript/examples) and used
+the [loader](https://github.com/AssemblyScript/examples/tree/main/loader) example.
