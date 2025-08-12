@@ -15,3 +15,7 @@ add
 
 # Rust generated binaries' folders
 target
+
+# Generated WebAssembly and MachineCode files
+*.wasm
+*.o
