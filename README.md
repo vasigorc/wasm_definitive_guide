@@ -7,23 +7,41 @@ This is a walkthrough of the O'Reilly book by Brian Sletten
 ## Required tools
 
 In order to run examples from this repository you will need a few tools installed on your machine. You may install them manually
-or, prepare a `nix-shell` environment, as, for example, I did [here](https://github.com/vasigorc/bash-utils/blob/main/nix/compiled-module.nix).
+or, use the [devenv](https://devenv.sh) environment defined in this repository ([devenv.nix](devenv.nix) and [devenv.yaml](devenv.yaml)).
+It was derived from my [compiled-module.nix](https://github.com/vasigorc/bash-utils/blob/main/nix/compiled-module.nix) and
+[nvim-module.nix](https://github.com/vasigorc/bash-utils/blob/main/nix/nvim-module.nix).
 
-### Example of using `nix-shell` environments
+### Using the `devenv` environment
 
-Note, that this requires you to have `nix-shell` [installed](https://nixos.org/download/) on your laptop.
+This requires [Nix](https://nixos.org/download/) and [devenv](https://devenv.sh/getting-started/) to be installed on your machine.
 
-In my case, I've downloaded this [Git repository](https://github.com/vasigorc/bash-utils), and then from the root of this repostiory I ran:
+The environment provides: Rust (stable, with the `wasm32-unknown-unknown` and `wasm32-wasip1` targets), Zig, Deno, Node.js, TypeScript,
+AssemblyScript, Emscripten, LLVM (`clang`, `wasm-ld`), `wabt`, `wasmtime`, `wasmer`, `wasm-pack`, Python 3 and `nvim`.
+
+From the root of this repository run (the first run downloads and builds everything, so it takes a while):
 
 ```shell
-nix-shell ~/repos/bash-utils/nix/compiled.nix
-unpacking 'https://github.com/NixOS/nixpkgs/archive/e24b4c09e963677b1beea49d411cd315a024ad3a.tar.gz' into the Git cache...
-info: using existing install for 'stable-x86_64-unknown-linux-gnu'
-info: default toolchain set to 'stable-x86_64-unknown-linux-gnu'
-
-  stable-x86_64-unknown-linux-gnu unchanged - rustc 1.79.0 (129f3b996 2024-06-10)
-[nix-shell:~/repos/wasm_definitive_guide]$
+devenv shell
 ```
+
+Then confirm that all tools are available:
+
+```shell
+check-tools
+```
+
+Or, without entering the shell:
+
+```shell
+devenv shell -- check-tools
+```
+
+Some notes:
+
+- `devenv.yaml` pins `nixpkgs` and `rust-overlay` inputs (needed to get the WebAssembly Rust targets), and `devenv.lock` pins their exact revisions.
+- The `nvim` set-up syncs your `~/.config/nvim` into `~/.config-nix`, so your host configuration is left untouched.
+- `wasm3` (used in [chapter 2](chapter_02/README.md)) is not part of the environment, because it was removed from `nixpkgs` as unmaintained.
+  Either install it manually (see below), or run the module with `wasmtime` / `wasmer` instead.
 
 ### Examples for manual tooling instalation
 
