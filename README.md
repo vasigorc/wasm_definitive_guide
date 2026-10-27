@@ -21,8 +21,13 @@ AssemblyScript, Emscripten, LLVM (`clang`, `wasm-ld`), `wabt`, `wasmtime`, `wasm
 From the root of this repository run (the first run downloads and builds everything, so it takes a while):
 
 ```shell
-devenv shell
+devenv shell --no-reload
 ```
+
+> `--no-reload` is important if you use `nvim` inside the shell. By default `devenv shell` wraps your session in an auto-reload
+> layer (the `devenv watching N files` bar at the bottom of the terminal), and in my case this stopped `Ctrl+h/j/k/l` window navigation
+> from working in `nvim`. Starting the shell with `--no-reload` fixes it, the only downside being that you have to re-enter the
+> shell yourself after editing `devenv.nix` or `devenv.yaml`.
 
 Then confirm that all tools are available:
 
