@@ -4,6 +4,8 @@ In this chapter the author looks at different specifications that have sprung up
 
 ## WASI Runtimes
 
+[hello-wasi](./hello-wasi)
+
 WASI introduced in the [previous chapter](/chapter_11/README.md) is a major vector for bringing new capabilities to WebAssembly. We saw basic usage of Wasmer, but the reality goes beyond that: it will be possible to execute arbitrary functionality from your own application using WASI-based mechanisms.
 
 The example from this section shows the basics of using WebAssembly and WASI with some simple modules. [The example](chapter_12/hello-wasi) is a native
@@ -31,10 +33,12 @@ You are 21
 
 ## Multi-value return
 
+[hello-mvr](./hello-mvr)
+
 The point of this MVP is to be able to return two+ values from a function, similar to tuples in [Python](https://realpython.com/python-tuple/#returning-tuples-from-functions) or [Rust](https://doc.rust-lang.org/rust-by-example/primitives/tuples.html).
 
 From Chapter 2, the result of a WebAssembly function is found at the top of the stack, so the top several elements
-of the stack could be interpreted as multimple return values.
+of the stack could be interpreted as multiple return values.
 
 Unlike, the previous example, this one uses [Wasmtime](https://docs.wasmtime.dev/) (same, as in the book), and not [Wasmer](https://docs.wasmer.io/), just because
 I failed to have a working example using `Wasmer` that would look equally concise as the `Wasmtime`'s - [link](https://github.com/wasmerio/wasmer/discussions/5647).
@@ -53,6 +57,8 @@ cargo build --release
 
 ## Reference Types
 
+[hello-extref](./hello-extref)
+
 The previous sub-section could be viewed as a prerequisite for the specification described in this one: ability to specify references to opaque handlers, which
 could serve as a bridge for adding garbage collection, having typed references, or using exception handling. At the same time, the goal of this specification
 was to not let WebAssembly modules have access by default to opaque system resource references. This is achieved by manipulating `Table` members (recall from Chapter 7),
@@ -70,6 +76,8 @@ Received "secret key" back from calling extern-ref aware function.`
 ```
 
 ## Module Linking
+
+[hello-modlink](./hello-modlink)
 
 This last MVP is about allowing modules to be imported through a variety of mechanisms and styles: to have a dependency on a module that will provide this behavior
 without having to import individual methods one by one. The strategy for achieving this is the ability to describe types of modules and allow different implementations
@@ -106,6 +114,8 @@ Hello, world!
 ```
 
 ## Feature Testing
+
+[detector](./detector)
 
 Using [this project](https://github.com/GoogleChromeLabs/wasm-feature-detect) we may test which browser supports which WASM MVP.
 
