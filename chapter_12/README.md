@@ -8,7 +8,7 @@ In this chapter the author looks at different specifications that have sprung up
 
 WASI introduced in the [previous chapter](/chapter_11/README.md) is a major vector for bringing new capabilities to WebAssembly. We saw basic usage of Wasmer, but the reality goes beyond that: it will be possible to execute arbitrary functionality from your own application using WASI-based mechanisms.
 
-The example from this section shows the basics of using WebAssembly and WASI with some simple modules. [The example](chapter_12/hello-wasi) is a native
+The example from this section shows the basics of using WebAssembly and WASI with some simple modules. [The example](hello-wasi) is a native
 Rust application, not a WASI application, so it is therefore allowed to access the filesystem. The author used `Wasmtime` as the environment, and we are using `Wasmer`.
 
 ### Link common WAT file
@@ -121,7 +121,7 @@ Using [this project](https://github.com/GoogleChromeLabs/wasm-feature-detect) we
 
 Note that [detector/index.html](detector/index.html) includes new modules compared to those listed in the book.
 
-1. Run this from `chapter12_detector`:
+1. Run this from `chapter_12/detector`:
 
 ```bash
 python3 -m http.server 10003
