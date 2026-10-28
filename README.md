@@ -44,20 +44,22 @@ devenv shell -- check-tools
 Some notes:
 
 - `devenv.yaml` pins `nixpkgs` and `rust-overlay` inputs (needed to get the WebAssembly Rust targets), and `devenv.lock` pins their exact revisions.
-- The `nvim` set-up syncs your `~/.config/nvim` into `~/.config-nix`, so your host configuration is left untouched.
 - `wasm3` (used in [chapter 2](chapter_02/README.md)) is not part of the environment, because it was removed from `nixpkgs` as unmaintained.
   Either install it manually (see below), or run the module with `wasmtime` / `wasmer` instead.
 
 #### LSP for `.wat` files
 
-The environment includes [wasm-language-tools](https://github.com/g-plane/wasm-language-tools) (the `wat_server` binary), a language
-server and formatter for the WebAssembly text format. After entering a fresh `devenv shell`, open any `.wat` file in `nvim` and run:
+[wasm-language-tools](https://github.com/g-plane/wasm-language-tools) is a language server and formatter for the WebAssembly text format.
+After entering a fresh `devenv shell`, open any `.wat` file in `nvim` and run:
 
 ```vim
 :LspInstall wasm_language_tools
 ```
 
 This gives you diagnostics, document symbols, inlay hints (e.g. the implicit `(;0;)` indices and `i32` types) and formatting for `.wat` files.
+
+Note that `:LspInstall` makes Mason install its own copy of `wat_server`, and `nvim` prefers that one, because Mason's `bin` directory comes
+first on its `PATH`. The `wat_server` binary from the `wasm-language-tools` Nix package is still available in the shell for use outside of `nvim`.
 
 Note that `nvim-treesitter` does not ship a Treesitter parser for `.wat` files, so there is no Treesitter-based highlighting or text objects for them.
 
