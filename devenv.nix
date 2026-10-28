@@ -44,6 +44,9 @@
     # README.md "LLVM": wasm-ld, shipped by lld
     pkgs.lld
 
+    # every chapter with a .wat file: language server (`wat_server`, lspconfig's wasm_language_tools) and formatter
+    pkgs.wasm-language-tools
+
     # chapter_14/README.md: `asc hello.ts -o hello.wasm`
     pkgs.assemblyscript
 
@@ -119,6 +122,7 @@
     emcc --version | head -1
     clang --version | head -1
     wasm-ld --version
+    command -v wat_server # LSP server for .wat files, no --version: it only speaks LSP on stdio
     asc --version
     zig version
     deno --version | head -1
