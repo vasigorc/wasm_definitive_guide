@@ -8,26 +8,20 @@ This is a walkthrough of the O'Reilly book by Brian Sletten
 
 In order to run examples from this repository you will need a few tools installed on your machine. You may install them manually
 or, use the [devenv](https://devenv.sh) environment defined in this repository ([devenv.nix](devenv.nix) and [devenv.yaml](devenv.yaml)).
-It was derived from my [compiled-module.nix](https://github.com/vasigorc/bash-utils/blob/main/nix/compiled-module.nix) and
-[nvim-module.nix](https://github.com/vasigorc/bash-utils/blob/main/nix/nvim-module.nix).
+It was derived from my [compiled-module.nix](https://github.com/vasigorc/bash-utils/blob/main/nix/compiled-module.nix).
 
 ### Using the `devenv` environment
 
 This requires [Nix](https://nixos.org/download/) and [devenv](https://devenv.sh/getting-started/) to be installed on your machine.
 
 The environment provides: Rust (stable, with the `wasm32-unknown-unknown` and `wasm32-wasip1` targets), Zig, Deno, Node.js, TypeScript,
-AssemblyScript, Emscripten, LLVM (`clang`, `wasm-ld`), `wabt`, `wasmtime`, `wasmer`, `wasm-pack`, `wasm-language-tools` (LSP for `.wat` files), Python 3 and `nvim`.
+AssemblyScript, Emscripten, LLVM (`clang`, `wasm-ld`), `wabt`, `wasmtime`, `wasmer`, `wasm-pack`, `wasm-language-tools` (a language server and formatter for `.wat` files) and Python 3.
 
 From the root of this repository run (the first run downloads and builds everything, so it takes a while):
 
 ```shell
-devenv shell --no-reload
+devenv shell
 ```
-
-> `--no-reload` is important if you use `nvim` inside the shell. By default `devenv shell` wraps your session in an auto-reload
-> layer (the `devenv watching N files` bar at the bottom of the terminal), and in my case this stopped `Ctrl+h/j/k/l` window navigation
-> from working in `nvim`. Starting the shell with `--no-reload` fixes it, the only downside being that you have to re-enter the
-> shell yourself after editing `devenv.nix` or `devenv.yaml`.
 
 Then confirm that all tools are available:
 
@@ -46,22 +40,9 @@ Some notes:
 - `devenv.yaml` pins `nixpkgs` and `rust-overlay` inputs (needed to get the WebAssembly Rust targets), and `devenv.lock` pins their exact revisions.
 - `wasm3` (used in [chapter 2](chapter_02/README.md)) is not part of the environment, because it was removed from `nixpkgs` as unmaintained.
   Either install it manually (see below), or run the module with `wasmtime` / `wasmer` instead.
-
-#### LSP for `.wat` files
-
-[wasm-language-tools](https://github.com/g-plane/wasm-language-tools) is a language server and formatter for the WebAssembly text format.
-After entering a fresh `devenv shell`, open any `.wat` file in `nvim` and run:
-
-```vim
-:LspInstall wasm_language_tools
-```
-
-This gives you diagnostics, document symbols, inlay hints (e.g. the implicit `(;0;)` indices and `i32` types) and formatting for `.wat` files.
-
-Note that `:LspInstall` makes Mason install its own copy of `wat_server`, and `nvim` prefers that one, because Mason's `bin` directory comes
-first on its `PATH`. The `wat_server` binary from the `wasm-language-tools` Nix package is still available in the shell for use outside of `nvim`.
-
-Note that `nvim-treesitter` does not ship a Treesitter parser for `.wat` files, so there is no Treesitter-based highlighting or text objects for them.
+- If `~/repos/bash-utils/devenv/nvim.nix` exists, `devenv.nix` imports it as well. It adds my personal Neovim set-up, which none of the examples need,
+  and is skipped on any other machine. See its [README](https://github.com/vasigorc/bash-utils/tree/main/devenv) for details, including how to use
+  it with `.wat` files.
 
 ### Examples for manual tooling instalation
 
