@@ -11,6 +11,10 @@ WASI introduced in the [previous chapter](/chapter_11/README.md) is a major vect
 The example from this section shows the basics of using WebAssembly and WASI with some simple modules. [The example](hello-wasi) is a native
 Rust application, not a WASI application, so it is therefore allowed to access the filesystem. The author used `Wasmtime` as the environment, and we are using `Wasmer`.
 
+> Both `Wasmer` examples ([hello-wasi](./hello-wasi) and [hello-extref](./hello-extref)) use `wasmer` 7.5.0. Earlier versions I started
+> with (5.0.6 and 6.0.1) no longer link with a recent Rust (I saw it with 1.90.0 and 1.99.1): `ld.lld: error: undefined symbol: __rust_probestack`.
+> Upgrading was enough, apart from `Cranelift` having moved from `wasmer` to `wasmer::sys`.
+
 ### Link common WAT file
 
 For this exercise we will need the `hello.wat` age calculating module that was initially added in Chapter 2, and later moved to the [common](../common) folder.
