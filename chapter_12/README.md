@@ -104,6 +104,10 @@ The [second module](hello-modlink/linking2.wat) defines a type for a function th
 
 The exported `log` function invokes `fd_write`. This module also exports a `Memory` instance and a `global` variable indicating the current offset to write values into.
 
+> `fd_write` is not WebAssembly code. It is Rust code in `wasmtime-wasi`, running in the host. It reads the iovec at addresses 4 to 11
+> of the guest's memory and gets `ptr = 65536`, `len = 14`. It reads those 14 bytes, writes them to the host's real stdout, and writes
+> the count back to guest address 0. The guest never touches your terminal. The host does all of it, by reading the guest's memory.
+
 Note that the Rust code is slightly different than in the book - [`Wasmtime`'s example](https://github.com/bytecodealliance/wasmtime/blob/main/examples/linking.rs) evolves over time.
 
 Building and running this examples prints:
