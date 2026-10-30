@@ -103,7 +103,15 @@ the WASI specification:
 
 To prove the initial point and intent of this exercise we will instead try to
 create the same file in the _$HOME_ directory. We'll compile this program with the
-`wasm32-wasip1` target and run it with `wasmer`, just as we did in the previous example:
+`wasm32-wasip1` target and run it with `wasmer`, just as we did in the previous example. Note that the build has to
+use the `wasm32-wasip1` target too: `wasm32-unknown-unknown` puts the binary in a different directory
+(`target/wasm32-unknown-unknown/release`), and `wasmer` then fails with `Unable to find "target/wasm32-wasip1/release/hello-fs.wasm"`.
+
+```shell
+cargo build --target wasm32-wasip1 --release
+```
+
+The first attempt fails, because we pass `--dir=$HOME` (the access to the directory), but not the `$HOME` variable:
 
 ```shell
  ✘ vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide/chapter_11/hello-fs   main ±  wasmer run target/wasm32-wasip1/release/hello-fs.wasm --dir=$HOME
@@ -146,5 +154,13 @@ the `$HOME` environment variable to the WASI runtime:
 ```shell
  ✘ vasilegorcinschi@bonobo15  ~/repos/wasm_definitive_guide/chapter_11/hello-fs   main ±  wasmer run target/wasm32-wasip1/release/hello-fs.wasm --dir=$HOME --env HOME=$HOME
 Contents of /home/vasilegorcinschi/hello.txt: Hello, world!
+```
+
+Recent `wasmer` versions (tested with 7.5.0) print `warning: The --dir option is deprecated and will be removed in the next major release.
+Please use --volume instead.` The replacement is a drop-in:
+
+```shell
+wasmer run target/wasm32-wasip1/release/hello-fs.wasm --volume=$HOME --env HOME=$HOME
+Contents of /home/vasile/hello.txt: Hello, world!
 ```
 
